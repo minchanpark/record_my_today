@@ -46,6 +46,7 @@ dependencies:
   youtube_api: ^1.0.4
   flutter_inappwebview: ^6.0.0
   flutter_dotenv: ^5.1.0
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:
@@ -71,7 +72,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - .env 
+    - .env
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

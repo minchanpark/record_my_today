@@ -16,6 +16,9 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late User? currentUser = FirebaseAuth.instance.currentUser;
 
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _pwController = TextEditingController();
+
   Future<UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -59,6 +62,24 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<void> signInWithEmailPassword() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _idController.text.trim(),
+        password: _pwController.text.trim(),
+      );
+      currentUser = userCredential.user;
+      Navigator.pushNamed(context, '/record_my_day');
+      _idController.clear();
+      _pwController.clear();
+    } on FirebaseAuthException catch (e) {
+      print('Error signing in with email and password: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to sign in: ${e.message}')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -66,74 +87,149 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: height * (200 / 852)),
-          Center(
-            child: Text(
-              'Record My day',
-              style: TextStyle(
-                fontSize: width * (18 / 320),
-                fontFamily: 'Ribeye',
-                color: Colors.black,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: height * (250 / 852)),
+            Center(
+              child: Text(
+                'Record My day',
+                style: TextStyle(
+                  fontSize: width * (18 / 320),
+                  fontFamily: 'Ribeye',
+                  color: Colors.black,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: height * (200 / 852)),
-          SizedBox(
-            width: 150,
-            height: 40,
-            child: ElevatedButton(
+            SizedBox(height: height * (250 / 852)),
+            Container(
+              width: width * (300 / 320),
+              color: const Color.fromRGBO(217, 217, 217, 0.3),
+              child: TextFormField(
+                textAlignVertical: TextAlignVertical.center,
+                controller: _idController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.email),
+                  border: InputBorder.none,
+                  hintText: 'ID',
+                  hintStyle: TextStyle(
+                    fontFamily: 'Ribeye',
+                    color: Color.fromRGBO(1, 1, 1, 0.5),
+                  ),
+                ),
+                cursorColor: Colors.black,
+              ),
+            ),
+            SizedBox(height: height * (10 / 852)),
+            Container(
+              width: width * (300 / 320),
+              color: const Color.fromRGBO(217, 217, 217, 0.3),
+              child: TextFormField(
+                textAlignVertical: TextAlignVertical.center,
+                controller: _pwController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.password),
+                  border: InputBorder.none,
+                  hintText: 'Password',
+                  hintStyle: TextStyle(
+                    fontFamily: 'Ribeye',
+                    color: Color.fromRGBO(1, 1, 1, 0.5),
+                  ),
+                ),
+                obscureText: true,
+                cursorColor: Colors.black,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: width * (130 / 320)),
+                TextButton(
+                  onPressed: () async {
+                    await signInWithEmailPassword();
+                  },
+                  child: Text(
+                    'Login',
+                    selectionColor: Colors.white,
+                    style: TextStyle(
+                      fontFamily: 'Ribeye',
+                      color: Color.fromRGBO(1, 1, 1, 0.7),
+                      fontSize: width * (15 / 320),
+                    ),
+                  ),
+                ),
+                Expanded(child: Text('')),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
+                  child: const Text(
+                    'Register',
+                    selectionColor: Colors.white,
+                    style: TextStyle(
+                      fontFamily: 'Ribeye',
+                      color: Color.fromRGBO(1, 1, 1, 0.6),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: height * (20 / 852)),
+            SizedBox(
+              width: 150,
+              height: 40,
+              child: ElevatedButton(
+                style: const ButtonStyle(
+                  elevation: WidgetStatePropertyAll(0),
+                  backgroundColor: WidgetStatePropertyAll(
+                    Color.fromRGBO(1, 1, 1, 0.1),
+                  ),
+                ),
+                child: Text(
+                  'Google login',
+                  style: TextStyle(
+                    fontSize: width * (12 / 320),
+                    fontFamily: 'Ribeye',
+                    color: Color.fromARGB(255, 45, 45, 45),
+                  ),
+                ),
+                onPressed: () async {
+                  try {
+                    await signInWithGoogle();
+
+                    Navigator.pushNamed(context, '/record_my_day');
+                  } catch (e) {
+                    print('Error signing in with Google: $e');
+                  }
+                },
+              ),
+            ),
+            SizedBox(height: height * (10 / 852)),
+            /*ElevatedButton(
               style: const ButtonStyle(
-                elevation: MaterialStatePropertyAll(0),
-                backgroundColor: MaterialStatePropertyAll(
+                elevation: WidgetStatePropertyAll(0),
+                backgroundColor: WidgetStatePropertyAll(
                   Color.fromRGBO(1, 1, 1, 0.1),
                 ),
               ),
+              onPressed: () async {
+                await signInAnonymously();
+
+                Navigator.pushNamed(context, '/record_my_day');
+              },
               child: Text(
-                'Google login',
+                'Guest login',
                 style: TextStyle(
                   fontSize: width * (12 / 320),
                   fontFamily: 'Ribeye',
                   color: Color.fromARGB(255, 45, 45, 45),
                 ),
               ),
-              onPressed: () async {
-                try {
-                  await signInWithGoogle();
-
-                  Navigator.pushNamed(context, '/record_my_day');
-                } catch (e) {
-                  print('Error signing in with Google: $e');
-                }
-              },
-            ),
-          ),
-          SizedBox(height: height * (10 / 852)),
-          ElevatedButton(
-            style: const ButtonStyle(
-              elevation: MaterialStatePropertyAll(0),
-              backgroundColor: MaterialStatePropertyAll(
-                Color.fromRGBO(1, 1, 1, 0.1),
-              ),
-            ),
-            onPressed: () async {
-              await signInAnonymously();
-
-              Navigator.pushNamed(context, '/record_my_day');
-            },
-            child: Text(
-              'Guest login',
-              style: TextStyle(
-                fontSize: width * (12 / 320),
-                fontFamily: 'Ribeye',
-                color: Color.fromARGB(255, 45, 45, 45),
-              ),
-            ),
-          ),
-        ],
+            ),*/
+          ],
+        ),
       ),
     );
   }

@@ -49,7 +49,7 @@ class _RecordDiaryState extends State<RecordDiary> {
 
     const String apiUrl = 'https://api.openai.com/v1/chat/completions';
     final String prompt =
-        '"${contentController.text}"라는 글에 맞는 노래를 추천해주고, “노래 제목 by 가수” 이런 식으로 대답만 해줘';
+        '"${contentController.text}"라는 글에 맞는 노래를 추천해주고, “노래 제목 by 가수” 이런 식으로 대답만 해줘. 한국어로 노래만 추천해줘.';
 
     try {
       final response = await http.post(

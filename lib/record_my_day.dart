@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'record_diary.dart';
@@ -31,29 +32,56 @@ class _RecordMyDayState extends State<RecordMyDay> {
     currentUser = _auth.currentUser;
   }
 
+  Future<void> signOutGoogle() async {
+    await GoogleSignIn().signOut();
+    await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> signOutEmailPassword() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
     DateTime select_time = selectedDay;
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: height * (150 / 852)),
+        padding: EdgeInsets.only(top: height * (70 / 852)),
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Row(
+              children: [
+                const Expanded(child: Text('')),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      signOutEmailPassword();
+                      signOutGoogle();
+                    },
+                    icon: Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                      size: width * (27 / 393),
+                    )),
+                SizedBox(width: width * (10 / 393)),
+              ],
+            ),
+            SizedBox(height: height * (50 / 852)),
             Text(
               'record my day',
               style: TextStyle(
                 fontFamily: 'Ribeye',
-                fontSize: width * (20 / 393),
+                fontSize: width * (27 / 393),
               ),
             ),
-            SizedBox(height: height * (56 / 852)),
-            //달력 넣기
+            SizedBox(height: height * (65 / 852)),
             TableCalendar(
               //calendarStyle: CalendarStyle(),
               firstDay: DateTime.utc(2021, 10, 16),

@@ -34,6 +34,40 @@ class _ShowDiaryState extends State<ShowDiary> {
     super.dispose();
   }
 
+  void deleteAlertDialog() {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        backgroundColor: Colors.white,
+        content: const Text('삭제하시겠습니까?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              print('delete successful!!');
+              firestore
+                  .collection(currentUser!.uid)
+                  .doc(widget.recordTime.toString())
+                  .delete();
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'OK',
+              style: TextStyle(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void updateVideoId(String videoId) {
     if (_isPlayerReady) {
       webViewController.loadUrl(
@@ -49,6 +83,7 @@ class _ShowDiaryState extends State<ShowDiary> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           content: Container(
             width: 300,
             height: 200,
@@ -75,15 +110,20 @@ class _ShowDiaryState extends State<ShowDiary> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         backgroundColor: const Color(0xFFFFFFFF),
-        title: const Text(
-          'today’s feeling?',
-          style: TextStyle(
-            fontFamily: 'Ribeye',
+        title: Padding(
+          padding: const EdgeInsets.only(left: 55),
+          child: Text(
+            'today’s feeling?',
+            style: TextStyle(
+              fontFamily: 'Ribeye',
+              fontSize: width * (18 / 393),
+            ),
           ),
         ),
         actions: <Widget>[
@@ -105,7 +145,13 @@ class _ShowDiaryState extends State<ShowDiary> {
               Icons.create,
               color: Colors.black,
             ),
-          )
+          ),
+          IconButton(
+              onPressed: () {
+                //파이어 베이스에서 삭제하는 로직 추가
+                deleteAlertDialog();
+              },
+              icon: const Icon(Icons.delete))
         ],
       ),
       body: currentUser == null
