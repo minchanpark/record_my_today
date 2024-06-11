@@ -34,40 +34,6 @@ class _ShowDiaryState extends State<ShowDiary> {
     super.dispose();
   }
 
-  void deleteAlertDialog() {
-    showDialog<String>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        backgroundColor: Colors.white,
-        content: const Text('삭제하시겠습니까?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(context, 'Cancel'),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              print('delete successful!!');
-              firestore
-                  .collection(currentUser!.uid)
-                  .doc(widget.recordTime.toString())
-                  .delete();
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   void updateVideoId(String videoId) {
     if (_isPlayerReady) {
       webViewController.loadUrl(
@@ -78,39 +44,92 @@ class _ShowDiaryState extends State<ShowDiary> {
     }
   }
 
-  void youtubePlayerDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          content: Container(
-            width: 300,
-            height: 200,
-            color: Colors.white,
-            child: InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: WebUri("https://www.youtube.com/embed/${widget.videoId}"),
-              ),
-              onWebViewCreated: (controller) {
-                webViewController = controller;
-                setState(() {
-                  _isPlayerReady = true;
-                });
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    void deleteAlertDialog() {
+      showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          backgroundColor: Colors.white,
+          title: Center(
+              child: Padding(
+            padding: EdgeInsets.only(top: height * (20 / 852)),
+            child: const Text(
+              'Do you want to delete this note?',
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Ribeye',
+                color: Colors.black,
+              ),
+            ),
+          )),
+          elevation: 0,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Ribeye',
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                print('delete successful!!');
+                firestore
+                    .collection(currentUser!.uid)
+                    .doc(widget.recordTime.toString())
+                    .delete();
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Ribeye',
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    void youtubePlayerDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            content: Container(
+              width: width * (300 / 320),
+              height: height * (200 / 852),
+              color: Colors.white,
+              child: InAppWebView(
+                initialUrlRequest: URLRequest(
+                  url:
+                      WebUri("https://www.youtube.com/embed/${widget.videoId}"),
+                ),
+                onWebViewCreated: (controller) {
+                  webViewController = controller;
+                  setState(() {
+                    _isPlayerReady = true;
+                  });
+                },
+              ),
+            ),
+          );
+        },
+      );
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),

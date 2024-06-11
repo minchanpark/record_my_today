@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Text(
                 'Record My day',
                 style: TextStyle(
-                  fontSize: width * (18 / 320),
+                  fontSize: width * (25 / 320),
                   fontFamily: 'Ribeye',
                   color: Colors.black,
                 ),
@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(
                       fontFamily: 'Ribeye',
                       color: Color.fromRGBO(1, 1, 1, 0.7),
-                      fontSize: width * (15 / 320),
+                      fontSize: width * (15.5 / 320),
                     ),
                   ),
                 ),
@@ -165,12 +165,13 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     Navigator.pushNamed(context, '/register');
                   },
-                  child: const Text(
+                  child: Text(
                     'Register',
                     selectionColor: Colors.white,
                     style: TextStyle(
                       fontFamily: 'Ribeye',
-                      color: Color.fromRGBO(1, 1, 1, 0.6),
+                      fontSize: width * (12 / 320),
+                      color: Color.fromRGBO(1, 1, 1, 0.8),
                     ),
                   ),
                 ),
@@ -178,8 +179,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: height * (20 / 852)),
             SizedBox(
-              width: 150,
-              height: 40,
+              width: width * (150 / 320),
+              height: height * (40 / 852),
               child: ElevatedButton(
                 style: const ButtonStyle(
                   elevation: WidgetStatePropertyAll(0),

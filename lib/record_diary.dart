@@ -218,10 +218,11 @@ class _RecordDiaryState extends State<RecordDiary> {
               _buildTextField(hintText: 'title', controller: titleController),
               SizedBox(height: height * (25 / 852)),
               _buildTextField(
-                  hintText: 'record your today',
-                  controller: contentController,
-                  heightFactor: 384 / 852),
-              SizedBox(height: height * (10 / 852)),
+                hintText: 'record your today',
+                controller: contentController,
+                heightFactor: 390 / 852,
+              ),
+              SizedBox(height: height * (30 / 852)),
               ElevatedButton(
                 onPressed: _sendPrompt,
                 style: ElevatedButton.styleFrom(
@@ -285,7 +286,7 @@ class _RecordDiaryState extends State<RecordDiary> {
                     ),
                   ],
                 ),
-              SizedBox(height: height * (10 / 852)),
+              SizedBox(height: height * (20 / 852)),
               Row(
                 children: [
                   const Expanded(child: Text('')),
