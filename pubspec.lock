@@ -174,14 +174,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_dotenv:
-    dependency: "direct main"
-    description:
-      name: flutter_dotenv
-      sha256: "9357883bdd153ab78cbf9ffa07656e336b8bbb2b5a3ca596b0b27e119f7c7d77"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.1.0"
   flutter_inappwebview:
     dependency: "direct main"
     description:
@@ -677,14 +669,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.3.6"
-  youtube_api:
-    dependency: "direct main"
-    description:
-      name: youtube_api
-      sha256: "9b355d327a0a3a06fe91b9f21b2075214fc44225a1824d106191a248894c7999"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.4"
   youtube_data_api:
     dependency: "direct main"
     description:

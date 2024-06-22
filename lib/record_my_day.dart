@@ -48,54 +48,78 @@ class _RecordMyDayState extends State<RecordMyDay> {
 
     DateTime select_time = selectedDay;
 
+    Widget logOutButton() {
+      return IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+          signOutEmailPassword();
+          signOutGoogle();
+        },
+        icon: Icon(
+          Icons.logout,
+          color: Colors.black,
+          size: width * (27 / 393),
+        ),
+      );
+    }
+
+    Widget profileButton() {
+      return IconButton(
+        onPressed: () {},
+        icon: Icon(
+          Icons.person_outline,
+          color: Colors.black,
+          size: width * (27 / 393),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'record my day',
+          style: TextStyle(
+            fontFamily: 'Ribeye',
+            fontSize: width * (25 / 393),
+          ),
+        ),
+        //leading: profileButton(),
+        actions: [
+          logOutButton(),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: height * (70 / 852)),
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-              children: [
-                const Expanded(child: Text('')),
-                IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      signOutEmailPassword();
-                      signOutGoogle();
-                    },
-                    icon: Icon(
-                      Icons.logout,
-                      color: Colors.black,
-                      size: width * (27 / 393),
-                    )),
-                SizedBox(width: width * (10 / 393)),
-              ],
-            ),
-            SizedBox(height: height * (50 / 852)),
-            Text(
-              'record my day',
-              style: TextStyle(
-                fontFamily: 'Ribeye',
-                fontSize: width * (27 / 393),
-              ),
-            ),
             SizedBox(height: height * (65 / 852)),
             TableCalendar(
-              //calendarStyle: CalendarStyle(),
               firstDay: DateTime.utc(2021, 10, 16),
               lastDay: DateTime.utc(2030, 3, 14),
               focusedDay: focusedDay,
+              calendarStyle: const CalendarStyle(
+                weekendTextStyle: TextStyle(color: Colors.red),
+                selectedDecoration: BoxDecoration(
+                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                  shape: BoxShape.circle,
+                ),
+                todayDecoration: BoxDecoration(
+                  color: Color.fromRGBO(0, 0, 0, 0.5),
+                  shape: BoxShape.circle,
+                ),
+              ),
               onDaySelected: (DateTime selectedDay, DateTime focusedDay) {
-                // 선택된 날짜의 상태를 갱신합니다.
                 setState(() {
                   this.selectedDay = selectedDay;
                   this.focusedDay = focusedDay;
                 });
               },
               selectedDayPredicate: (DateTime day) {
-                // selectedDay 와 동일한 날짜의 모양을 바꿔줍니다.
                 return isSameDay(selectedDay, day);
               },
             ),
@@ -109,15 +133,14 @@ class _RecordMyDayState extends State<RecordMyDay> {
                     backgroundColor: const Color.fromRGBO(73, 69, 79, 0.25),
                     foregroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   onPressed: () async {
                     if (currentUser != null) {
                       await checkDataAndNavigate(
                           context, select_time, currentUser!.uid);
-                    } else {
-                      // Handle user not logged in
-                    }
+                    } else {}
                   },
                   child: const Icon(Icons.create),
                 ),

@@ -1,4 +1,3 @@
-import 'package:youtube_api/youtube_api.dart';
 import 'package:youtube_data_api/youtube_data_api.dart';
 import 'package:flutter/material.dart';
 
@@ -19,10 +18,6 @@ class _SelectMusicState extends State<SelectMusic> {
   bool isLoading = false;
   FocusNode textfieldFocusNode = FocusNode();
 
-  static String key = 'AIzaSyAp-1oVD2cFhwktdAB60solbLo1LpboTiA';
-  YoutubeAPI ytApi = YoutubeAPI(key);
-  List<YouTubeVideo> videoResult = [];
-
   void _search(String query) async {
     setState(() {
       isLoading = true;
@@ -40,7 +35,6 @@ class _SelectMusicState extends State<SelectMusic> {
         isLoading = false;
       });
     }
-    videoResult = await ytApi.search(query);
   }
 
   Widget _buildSearchResultDetailBody() {
@@ -221,12 +215,12 @@ class _SelectMusicState extends State<SelectMusic> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
                     borderSide: BorderSide(
-                      color: Color.fromRGBO(255, 255, 255, 0.3),
+                      color: const Color.fromRGBO(255, 255, 255, 0.3),
                       width: width * (1 / 320),
                     ),
                   ),
                   labelText: 'please search song title or "singer+title"',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     fontFamily: 'Ribeye',
                     color: Colors.black,
                   ),

@@ -31,8 +31,10 @@ class _RegisterPageState extends State<RegisterPage> {
       setState(() {
         _errorMessageId = '유효한 이메일 주소를 입력하세요.';
       });
+
       return;
     }
+    _errorMessageId = " ";
 
     if (!_isValidPassword(pwController)) {
       setState(() {
@@ -40,13 +42,14 @@ class _RegisterPageState extends State<RegisterPage> {
       });
       return;
     }
-
+    _errorMessagePw = " ";
     if (pwController != confirmPassword) {
       setState(() {
         _errorMessageConfirm = '비밀번호가 일치하지 않습니다.';
       });
       return;
     }
+    _errorMessageConfirm = " ";
 
     try {
       UserCredential userCredential =
@@ -197,11 +200,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       _signup();
-                      setState(() {
-                        _errorMessageConfirm = '';
-                        _errorMessageId = '';
-                        _errorMessagePw = '';
-                      });
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,

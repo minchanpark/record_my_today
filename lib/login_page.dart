@@ -48,20 +48,6 @@ class _LoginPageState extends State<LoginPage> {
     return userCredential;
   }
 
-  Future<UserCredential> signInAnonymously() async {
-    try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInAnonymously();
-      currentUser = userCredential.user;
-      await _firestore.collection('user').doc(currentUser!.uid).set({
-        'uid': currentUser!.uid,
-      });
-      return userCredential;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<void> signInWithEmailPassword() async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -208,27 +194,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             SizedBox(height: height * (10 / 852)),
-            /*ElevatedButton(
-              style: const ButtonStyle(
-                elevation: WidgetStatePropertyAll(0),
-                backgroundColor: WidgetStatePropertyAll(
-                  Color.fromRGBO(1, 1, 1, 0.1),
-                ),
-              ),
-              onPressed: () async {
-                await signInAnonymously();
-
-                Navigator.pushNamed(context, '/record_my_day');
-              },
-              child: Text(
-                'Guest login',
-                style: TextStyle(
-                  fontSize: width * (12 / 320),
-                  fontFamily: 'Ribeye',
-                  color: Color.fromARGB(255, 45, 45, 45),
-                ),
-              ),
-            ),*/
           ],
         ),
       ),

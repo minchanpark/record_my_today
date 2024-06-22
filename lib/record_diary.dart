@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'select_music.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 
 class RecordDiary extends StatefulWidget {
   final DateTime recordTime;
@@ -30,60 +28,11 @@ class _RecordDiaryState extends State<RecordDiary> {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final User? currentUser = FirebaseAuth.instance.currentUser;
   Map<String, dynamic>? result;
-  String _response = '';
 
   @override
   void initState() {
     super.initState();
     _loadData();
-  }
-
-  Future<void> _sendPrompt() async {
-    final String? apiKey = dotenv.env['OPENAI_API_KEY'];
-    if (apiKey == null) {
-      setState(() {
-        _response = 'Error: API key not found';
-      });
-      return;
-    }
-
-    const String apiUrl = 'https://api.openai.com/v1/chat/completions';
-    final String prompt =
-        '"${contentController.text}"라는 글에 맞는 노래를 추천해주고, “노래 제목 by 가수” 이런 식으로 대답만 해줘. 한국어로 노래만 추천해줘.';
-
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $apiKey',
-        },
-        body: jsonEncode({
-          'model': 'gpt-3.5-turbo',
-          'messages': [
-            {'role': 'user', 'content': prompt}
-          ],
-          'max_tokens': 500,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-        setState(() {
-          _response = jsonResponse['choices'][0]['message']['content'] ??
-              'No recommended song found.';
-        });
-      } else {
-        setState(() {
-          _response =
-              'Error: ${response.reasonPhrase}, Details: ${response.body}';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _response = 'Error: $e';
-      });
-    }
   }
 
   Future<void> _loadData() async {
@@ -177,17 +126,21 @@ class _RecordDiaryState extends State<RecordDiary> {
         maxLines: heightFactor > 54 / 852 ? null : 1,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(
-              top: heightFactor > 54 / 852 ? height * (170 / 852) : 0),
+              top: heightFactor > 54 / 852 ? height * (190 / 852) : 0),
           border: InputBorder.none,
           hintText: hintText,
           hintStyle: TextStyle(
-            color: const Color.fromRGBO(0, 0, 0, 0.3),
+            color: const Color.fromRGBO(0, 0, 0, 0.6),
             fontFamily: 'Ribeye',
             fontSize: width * (20 / 393),
           ),
         ),
       ),
     );
+  }
+
+  String formatDate(DateTime date) {
+    return DateFormat('yyyy. MM. dd').format(date);
   }
 
   @override
@@ -214,42 +167,22 @@ class _RecordDiaryState extends State<RecordDiary> {
           child: Column(
             children: [
               const Divider(),
-              SizedBox(height: height * (20 / 852)),
+              Text(
+                formatDate(widget.recordTime),
+                style: TextStyle(
+                  fontFamily: 'Ribeye',
+                  fontSize: width * (18 / 393),
+                ),
+              ),
+              SizedBox(height: height * (7 / 852)),
               _buildTextField(hintText: 'title', controller: titleController),
               SizedBox(height: height * (25 / 852)),
               _buildTextField(
                 hintText: 'record your today',
                 controller: contentController,
-                heightFactor: 390 / 852,
+                heightFactor: 440 / 852,
               ),
-              SizedBox(height: height * (30 / 852)),
-              ElevatedButton(
-                onPressed: _sendPrompt,
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: const Color(0xFFD9D9D9),
-                ),
-                child: Text(
-                  'Recommended Song',
-                  style: TextStyle(
-                    color: const Color.fromRGBO(0, 0, 0, 0.59),
-                    fontFamily: 'Ribeye',
-                    fontSize: width * (15 / 393),
-                  ),
-                ),
-              ),
-              if (_response.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    _response,
-                    style: TextStyle(
-                      fontFamily: 'Ribeye',
-                      fontSize: width * (15 / 393),
-                    ),
-                  ),
-                ),
-              SizedBox(height: height * (10 / 852)),
+              SizedBox(height: height * (15 / 852)),
               if (result == null || result!['youtubeImage'] == 'nullImage')
                 ElevatedButton(
                   onPressed: pushNextPage,
@@ -260,7 +193,7 @@ class _RecordDiaryState extends State<RecordDiary> {
                   child: Text(
                     'record as music',
                     style: TextStyle(
-                      color: const Color.fromRGBO(0, 0, 0, 0.59),
+                      color: const Color.fromRGBO(0, 0, 0, 0.7),
                       fontFamily: 'Ribeye',
                       fontSize: width * (15 / 393),
                     ),
@@ -299,7 +232,7 @@ class _RecordDiaryState extends State<RecordDiary> {
                     child: Text(
                       'store',
                       style: TextStyle(
-                        color: const Color.fromRGBO(0, 0, 0, 0.59),
+                        color: const Color.fromRGBO(0, 0, 0, 0.7),
                         fontFamily: 'Ribeye',
                         fontSize: width * (15 / 393),
                       ),
