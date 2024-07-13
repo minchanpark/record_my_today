@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moapp_project/record_diary.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:intl/intl.dart';
 
 class ShowDiary extends StatefulWidget {
   final DateTime recordTime;
@@ -42,6 +43,10 @@ class _ShowDiaryState extends State<ShowDiary> {
         ),
       );
     }
+  }
+
+  String formatDate(DateTime date) {
+    return DateFormat('yyyy. MM. dd').format(date);
   }
 
   @override
@@ -217,7 +222,14 @@ class _ShowDiaryState extends State<ShowDiary> {
                     child: Column(
                       children: [
                         const Divider(),
-                        SizedBox(height: height * (45 / 852)),
+                        /*Text(
+                          formatDate(widget.recordTime),
+                          style: TextStyle(
+                            fontFamily: 'Ribeye',
+                            fontSize: width * (18 / 393),
+                          ),
+                        ),*/
+                        SizedBox(height: height * (15 / 852)),
                         Text(
                           title,
                           style: TextStyle(
