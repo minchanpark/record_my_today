@@ -76,28 +76,29 @@ class _RecordMyDayState extends State<RecordMyDay> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: Text(
-          'record my day',
-          style: TextStyle(
-            fontFamily: 'Ribeye',
-            fontSize: width * (25 / 393),
-          ),
-        ),
-        //leading: profileButton(),
-        actions: [
-          logOutButton(),
-        ],
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: height * (70 / 852)),
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: height * (65 / 852)),
+            Row(
+              //crossAxisAlignment: CrossAxisAlignment.center,
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(width: width * (95 / 393)),
+                Text(
+                  'record my day',
+                  style: TextStyle(
+                    fontFamily: 'Ribeye',
+                    fontSize: width * (25 / 393),
+                  ),
+                ),
+                SizedBox(width: width * (45 / 393)),
+                logOutButton(),
+              ],
+            ),
+            SizedBox(height: height * (90 / 852)),
             TableCalendar(
               firstDay: DateTime.utc(2021, 10, 16),
               lastDay: DateTime.utc(2030, 3, 14),

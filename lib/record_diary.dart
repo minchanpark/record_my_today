@@ -107,7 +107,7 @@ class _RecordDiaryState extends State<RecordDiary> {
   Widget _buildTextField({
     required String hintText,
     required TextEditingController controller,
-    double heightFactor = 54 / 852,
+    double heightFactor = 84 / 852,
     TextAlign textAlign = TextAlign.center,
     TextAlignVertical textAlignVertical = TextAlignVertical.center,
   }) {
@@ -123,10 +123,10 @@ class _RecordDiaryState extends State<RecordDiary> {
         textAlignVertical: textAlignVertical,
         controller: controller,
         cursorColor: Colors.black,
-        maxLines: heightFactor > 54 / 852 ? null : 1,
+        maxLines: heightFactor > 84 / 852 ? null : 1,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(
-              top: heightFactor > 54 / 852 ? height * (190 / 852) : 0),
+              top: heightFactor > 84 / 852 ? height * (190 / 852) : 0),
           border: InputBorder.none,
           hintText: hintText,
           hintStyle: TextStyle(

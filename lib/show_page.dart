@@ -54,7 +54,6 @@ class _ShowDiaryState extends State<ShowDiary> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     var keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     void deleteAlertDialog() {
       showDialog<String>(
@@ -115,13 +114,19 @@ class _ShowDiaryState extends State<ShowDiary> {
           return AlertDialog(
             backgroundColor: Colors.white,
             content: Container(
-              width: width * (300 / 320),
-              height: height * (200 / 852),
+              width: width * (500 / 320),
+              height: height * (400 / 852),
               color: Colors.white,
               child: InAppWebView(
                 initialUrlRequest: URLRequest(
                   url:
                       WebUri("https://www.youtube.com/embed/${widget.videoId}"),
+                ),
+                initialSettings: InAppWebViewSettings(
+                  allowsInlineMediaPlayback: true,
+                  mediaPlaybackRequiresUserGesture: true,
+                  userAgent:
+                      "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
                 ),
                 onWebViewCreated: (controller) {
                   webViewController = controller;
@@ -146,6 +151,7 @@ class _ShowDiaryState extends State<ShowDiary> {
             'today’s feeling?',
             style: TextStyle(
               fontFamily: 'Ribeye',
+              overflow: TextOverflow.visible,
               fontSize: width * (18 / 393),
             ),
           ),
@@ -172,7 +178,6 @@ class _ShowDiaryState extends State<ShowDiary> {
           ),
           IconButton(
               onPressed: () {
-                //파이어 베이스에서 삭제하는 로직 추가
                 deleteAlertDialog();
               },
               icon: const Icon(Icons.delete))
@@ -222,13 +227,6 @@ class _ShowDiaryState extends State<ShowDiary> {
                     child: Column(
                       children: [
                         const Divider(),
-                        /*Text(
-                          formatDate(widget.recordTime),
-                          style: TextStyle(
-                            fontFamily: 'Ribeye',
-                            fontSize: width * (18 / 393),
-                          ),
-                        ),*/
                         SizedBox(height: height * (15 / 852)),
                         Text(
                           title,
