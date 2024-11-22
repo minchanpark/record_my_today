@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moapp_project/login_page.dart';
-import 'package:moapp_project/record_my_day.dart';
+import 'package:moapp_project/home_page.dart';
 import 'package:moapp_project/register_page.dart';
 import 'package:moapp_project/select_music.dart';
 

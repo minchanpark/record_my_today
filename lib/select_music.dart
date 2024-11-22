@@ -224,7 +224,8 @@ class _SelectMusicState extends State<SelectMusic> {
                     fontFamily: 'Ribeye',
                     color: Colors.black,
                   ),
-                  prefixIcon: const Icon(Icons.search, color: Colors.black),
+                  prefixIcon:
+                      const Icon(Icons.search, color: Colors.black, size: 25),
                   suffixIcon: IconButton(
                     onPressed: () {
                       searchController.clear();

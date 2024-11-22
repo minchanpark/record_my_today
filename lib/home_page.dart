@@ -82,20 +82,21 @@ class _RecordMyDayState extends State<RecordMyDay> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(height: height * (50 / 852)),
             Row(
-              //crossAxisAlignment: CrossAxisAlignment.center,
-              //mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(width: width * (95 / 393)),
+                //SizedBox(width: width * (95 / 393)),
                 Text(
-                  'record my day',
+                  'Record my day',
                   style: TextStyle(
                     fontFamily: 'Ribeye',
-                    fontSize: width * (25 / 393),
+                    fontSize: width * (30 / 393),
                   ),
                 ),
-                SizedBox(width: width * (45 / 393)),
-                logOutButton(),
+                //SizedBox(width: width * (45 / 393)),
+                //logOutButton(),
               ],
             ),
             SizedBox(height: height * (90 / 852)),
